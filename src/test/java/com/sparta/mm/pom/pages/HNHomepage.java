@@ -19,6 +19,7 @@ public class HNHomepage {
     By past = new By.ByLinkText("past");
     By comments = new By.ByLinkText("comments");
     By ask = new By.ByLinkText("ask");
+    By show = new By.ByLinkText("show");
 
     public HNHomepage(WebDriver driver) {
         this.driver = driver;
@@ -88,7 +89,10 @@ public class HNHomepage {
 
     private Integer numArticleToInt(WebElement element) {
         return Integer.valueOf(element.getText().replace(".", ""));
+      
+    public HNShowPage goToShow() {
+        driver.findElement(show).click();
+        return new HNShowPage(driver);
     }
-
 
 }
