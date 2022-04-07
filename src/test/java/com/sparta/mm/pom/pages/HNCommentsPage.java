@@ -1,15 +1,10 @@
 package com.sparta.mm.pom.pages;
 
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import sun.swing.StringUIClientPropertyKey;
 
-import java.security.PublicKey;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HNCommentsPage {
 
