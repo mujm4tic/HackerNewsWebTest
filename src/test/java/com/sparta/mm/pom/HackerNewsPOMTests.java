@@ -5,6 +5,9 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class HackerNewsPOMTests {
     private static WebDriver driver;
@@ -23,25 +26,31 @@ public class HackerNewsPOMTests {
         homepage = new HNHomepage(driver);
     }
 
-    @Test
-    @DisplayName("check headers exist")
-    void checkHeadersExists() {
-        for (String header : headers) {
-            Assertions.assertTrue(homepage.doesHeaderExist(header));
+    @Nested
+    @DisplayName("Test Homepage")
+    class testHomepage{
+
+        @Test
+        @DisplayName("check headers exist")
+        void checkHeadersExists() {
+            for (String header : headers) {
+                Assertions.assertTrue(homepage.doesHeaderExist(header));
+            }
         }
-    }
 
-    @Test
-    @DisplayName("check number articles is 30")
-    void checkNumberArticlesIs30() {
-        Assertions.assertEquals(30, homepage.getNumberOfArticles());
-    }
+        @Test
+        @DisplayName("check number articles is 30")
+        void checkNumberArticlesIs30() {
+            Assertions.assertEquals(30, homepage.getNumberOfArticles());
+        }
 
-    @Test
-    @DisplayName("check if 30 new articles are shown")
-    void checkIf30NewArticlesAreShown() {
-        homepage.loadMoreArticles();
-        Assertions.assertTrue((homepage.getNumberArticle(1) == 31) && (homepage.getNumberArticle(30) == 60));
+        @Test
+        @DisplayName("check if 30 new articles are shown")
+        void checkIf30NewArticlesAreShown() {
+            homepage.loadMoreArticles();
+            Assertions.assertTrue((homepage.getNumberArticle(1) == 31) && (homepage.getNumberArticle(30) == 60));
+        }
+
     }
 
     @Nested
@@ -73,7 +82,7 @@ public class HackerNewsPOMTests {
     }
 
     @Nested
-    @DisplayName("Test past page")
+    @DisplayName("Test Show Page")
     class testShowPage {
         @Test
         @DisplayName("Check that the show link works")
@@ -85,6 +94,28 @@ public class HackerNewsPOMTests {
         @DisplayName("Check number of item must be 30")
         void checkNumberOfItemEquals30() {
             Assertions.assertTrue(homepage.goToShow().isNumberOfItemEquals30());
+        }
+    }
+
+    @Nested
+    @DisplayName("Test Ask Page")
+    class testAskPage{
+        @Test
+        @DisplayName("Check that the ask link works")
+        void checkThatTheAskLinkWorks() {
+            assertEquals("https://news.ycombinator.com/ask", homepage.goToAsk().getURL());
+        }
+
+        @Test
+        @DisplayName("If Ask Header Exists")
+        void ifHeaderExists() {
+            assertTrue(homepage.goToAsk().doesHeaderExist());
+        }
+
+        @Test
+        @DisplayName("Ask Page Has 30 Entries")
+        void askPageHas30Entries() {
+            assertTrue(homepage.goToAsk().getNumberContentTitles()==30);
         }
     }
 
