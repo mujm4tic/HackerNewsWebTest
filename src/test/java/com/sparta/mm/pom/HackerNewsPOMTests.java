@@ -43,7 +43,7 @@ public class HackerNewsPOMTests {
         homepage.loadMoreArticles();
         Assertions.assertTrue((homepage.getNumberArticle(1) == 31) && (homepage.getNumberArticle(30) == 60));
     }
-  
+
     @Nested
     @DisplayName("Test past page")
     class testPastPage {
@@ -86,5 +86,15 @@ public class HackerNewsPOMTests {
         void checkNumberOfItemEquals30() {
             Assertions.assertTrue(homepage.goToShow().isNumberOfItemEquals30());
         }
+    }
+
+    @AfterEach()
+    void teardown() {
+        driver.close();
+    }
+
+    @AfterAll
+    static void teardownAll() {
+        driver.quit();
     }
 }

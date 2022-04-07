@@ -89,7 +89,8 @@ public class HNHomepage {
 
     private Integer numArticleToInt(WebElement element) {
         return Integer.valueOf(element.getText().replace(".", ""));
-      
+    }
+
     public HNShowPage goToShow() {
         driver.findElement(show).click();
         return new HNShowPage(driver);
