@@ -11,6 +11,7 @@ public class HNHomepage {
     By past = new By.ByLinkText("past");
     By comments = new By.ByLinkText("comments");
     By ask = new By.ByLinkText("ask");
+    By show = new By.ByLinkText("show");
 
     public HNHomepage(WebDriver driver) {
         this.driver = driver;
@@ -35,6 +36,11 @@ public class HNHomepage {
     public HNAskPage goToAsk() {
         driver.findElement(ask).click();
         return new HNAskPage(driver);
+    }
+
+    public HNShowPage goToShow() {
+        driver.findElement(show).click();
+        return new HNShowPage(driver);
     }
 
 
