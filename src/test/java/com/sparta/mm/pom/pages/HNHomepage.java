@@ -7,12 +7,8 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HNHomepage {
+public class HNHomepage extends HNPage {
 
-    private WebDriver driver;
-    private By pagetop = By.className("pagetop");
-    private By morelink = By.className("morelink");
-    private By titlelink = By.className("titlelink");
     private By rank = By.className("rank");
 
     By newest = new By.ByLinkText("new");
@@ -20,9 +16,10 @@ public class HNHomepage {
     By comments = new By.ByLinkText("comments");
     By ask = new By.ByLinkText("ask");
     By show = new By.ByLinkText("show");
+    By jobs = new By.ByLinkText("jobs");
 
     public HNHomepage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         driver.get("https://news.ycombinator.com/");
     }
 
@@ -46,29 +43,14 @@ public class HNHomepage {
         return new HNAskPage(driver);
     }
 
-    public boolean doesHeaderExist(String name) {
-        System.out.println(pagetop.toString());
-        return driver.findElement(pagetop).getText().contains(name);
+    public HNJobsPage goToJobs() {
+        driver.findElement(jobs).click();
+        return new HNJobsPage(driver);
     }
 
-    public void loadMoreArticles() {
-        driver.findElement(morelink).click();
-    }
-
-    public int getNumberOfArticles() {
-        List<WebElement> titlelinks = driver.findElements(titlelink);
-        System.out.println(titlelinks);
-        return titlelinks.size();
-    }
-
-    public List<String> getListArticles() {
-        List<String> articles = new ArrayList<>();
-        List<WebElement> titlelinks = driver.findElements(titlelink);
-        for (WebElement element : titlelinks) {
-            articles.add(element.getText());
-            System.out.println(element.getText());
-        }
-        return articles;
+    public HNShowPage goToShow() {
+        driver.findElement(show).click();
+        return new HNShowPage(driver);
     }
 
     public List<Integer> getListNumberArticles() {
@@ -76,7 +58,6 @@ public class HNHomepage {
         List<WebElement> ranks = driver.findElements(rank);
         for (WebElement element : ranks) {
             numberArticles.add(numArticleToInt(element));
-            System.out.println(element.getText());
         }
         return numberArticles;
     }
@@ -86,14 +67,8 @@ public class HNHomepage {
         return numArticleToInt(element);
 
     }
-
+    
     private Integer numArticleToInt(WebElement element) {
         return Integer.valueOf(element.getText().replace(".", ""));
     }
-
-    public HNShowPage goToShow() {
-        driver.findElement(show).click();
-        return new HNShowPage(driver);
-    }
-
 }

@@ -2,9 +2,18 @@ package com.sparta.mm.pom;
 
 import com.sparta.mm.pom.pages.HNHomepage;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
+import java.time.Duration;
+import java.util.Arrays;
+
+import static com.sparta.mm.pom.pages.HNPage.TOP_LINKS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,7 +22,6 @@ public class HackerNewsPOMTests {
     private static WebDriver driver;
     private HNHomepage homepage;
 
-    private static final String[] headers = new String[]{"Hacker News", "new", "past", "comments", "ask", "show", "jobs", "submit"};
 
     @BeforeAll
     static void setupAll() {
@@ -28,38 +36,37 @@ public class HackerNewsPOMTests {
 
     @Nested
     @DisplayName("Test Homepage")
-    class testHomepage{
+    class testHomepage {
 
         @Test
-        @DisplayName("check headers exist")
-        void checkHeadersExists() {
-            for (String header : headers) {
-                Assertions.assertTrue(homepage.doesHeaderExist(header));
-            }
+        @DisplayName("check top links exist")
+        void checkTopLinksExists() {
+            boolean doesToplinksExist = Arrays.stream(TOP_LINKS).anyMatch(topLink -> homepage.doesTopLinkExist(topLink));
+            Assertions.assertTrue(doesToplinksExist);
         }
 
         @Test
         @DisplayName("check number articles is 30")
         void checkNumberArticlesIs30() {
-            Assertions.assertEquals(30, homepage.getNumberOfArticles());
+            assertEquals(30, homepage.getSizeListTitle());
         }
 
         @Test
         @DisplayName("check if 30 new articles are shown")
         void checkIf30NewArticlesAreShown() {
-            homepage.loadMoreArticles();
+            homepage.clickMore();
             Assertions.assertTrue((homepage.getNumberArticle(1) == 31) && (homepage.getNumberArticle(30) == 60));
         }
-
     }
 
     @Nested
     @DisplayName("Test past page")
     class testPastPage {
+
         @Test
         @DisplayName("Check that the past link works")
         void checkThePastLinkWorks() {
-            Assertions.assertTrue(homepage.goToPastPage().isThatThePastLinkWorks());
+            assertEquals("https://news.ycombinator.com/front", homepage.goToPastPage().getUrl());
         }
 
         @Test
@@ -84,10 +91,11 @@ public class HackerNewsPOMTests {
     @Nested
     @DisplayName("Test Show Page")
     class testShowPage {
+
         @Test
         @DisplayName("Check that the show link works")
         void checkTheShowLinkWorks() {
-            Assertions.assertTrue(homepage.goToShow().isThatTheShowLinkWorks());
+            assertEquals("https://news.ycombinator.com/show", homepage.goToShow().getUrl());
         }
 
         @Test
@@ -95,29 +103,143 @@ public class HackerNewsPOMTests {
         void checkNumberOfItemEquals30() {
             Assertions.assertTrue(homepage.goToShow().isNumberOfItemEquals30());
         }
+
+        @Test
+        @DisplayName("Check title must start with Show HN:")
+        void checkTitleMustStartWithShowHN() {
+            Assertions.assertTrue(homepage.goToShow().isTitleStartWithShowHN());
+        }
+
+        @Test
+        @DisplayName("Check title must start with Show HN: after clicking More")
+        void checkTitleMustAlwaysStartWithShowHN() {
+            Assertions.assertTrue(homepage.goToShow().isTitleAlwaysStartWithShowHN());
+        }
     }
 
     @Nested
     @DisplayName("Test Ask Page")
-    class testAskPage{
+    class testAskPage {
         @Test
         @DisplayName("Check that the ask link works")
         void checkThatTheAskLinkWorks() {
-            assertEquals("https://news.ycombinator.com/ask", homepage.goToAsk().getURL());
+            assertEquals("https://news.ycombinator.com/ask", homepage.goToAsk().getUrl());
         }
 
         @Test
         @DisplayName("If Ask Header Exists")
         void ifHeaderExists() {
-            assertTrue(homepage.goToAsk().doesHeaderExist());
+            assertTrue(homepage.goToAsk().doesTopLinkExist("ask"));
         }
 
         @Test
         @DisplayName("Ask Page Has 30 Entries")
         void askPageHas30Entries() {
-            assertTrue(homepage.goToAsk().getNumberContentTitles()==30);
+            assertEquals(30, homepage.goToAsk().getSizeListTitle());
+        }
+
+        @Test
+        @DisplayName("First Score Is Found in 6 Second")
+        void isFoundInTime() {
+            Wait<WebDriver> wait = new FluentWait<>(driver)
+                    .withTimeout(Duration.ofSeconds(6))
+                    .pollingEvery(Duration.ofSeconds(2))
+                    .ignoring(NoSuchElementException.class);
+            driver.get(homepage.goToAsk().getUrl());
+            WebElement result = wait.until(driver -> driver.findElement(By.id("score_30940747")));
+            System.out.println(result);
+            Assertions.assertTrue(result.isDisplayed());
         }
     }
+
+    @Nested
+    @DisplayName("Test Comments Page")
+    class testCommentPage {
+        @Test
+        @DisplayName("Test Comments page")
+        void methodName() {
+            assertEquals("https://news.ycombinator.com/newcomments", homepage.goToComments().getUrl());
+        }
+
+        @Test
+        @DisplayName("Less Than 30 comments on the screen")
+        void lessThan30CommentsOnTheScreen() {
+            Assertions.assertTrue(homepage.goToComments().isLessThan30CommentOnPage());
+        }
+
+        @Test
+        @DisplayName("Check if there is more than 10 Spaces In A Paragraph")
+        void checkHowManySpacesInAParagraph() {
+            Assertions.assertTrue(homepage.goToComments().HowManySpacesInAParagraph(3) > 10);
+        }
+
+        @Test
+        @DisplayName("Check if there is more than 100 spaces in the page")
+        void checkHowManySpacesInASpecificParagraph() {
+            Assertions.assertTrue(homepage.goToComments().HowManySpacesInAParagraph() > 100);
+        }
+
+        @Test
+        @DisplayName("Check if paragraph contains hello")
+        void checkParagraphContains() {
+            Assertions.assertTrue(homepage.goToComments().GetParaGraphByIndex(1).contains("hello"));
+        }
+    }
+
+    @Nested
+    @DisplayName("Test Newest Page")
+    class testNewestPage {
+
+        @Test
+        @DisplayName("Check that the newest link works")
+        void checkThatTheAskLinkWorks() {
+            assertEquals("https://news.ycombinator.com/newest", homepage.goToNewest().getUrl());
+        }
+
+        @Test
+        @DisplayName("Check first article time is less than an hour")
+        void checkFirstArticleTimeIsLessThanAnHour() {
+            Assertions.assertTrue(homepage.goToNewest().isFirstArticleLessThanAnHour());
+        }
+    }
+
+    @Nested
+    @DisplayName("Test Jobs Page")
+    class testJobsPage {
+
+        @Test
+        @DisplayName("Check that the newest link works")
+        void checkThatTheAskLinkWorks() {
+            assertEquals("https://news.ycombinator.com/jobs", homepage.goToJobs().getUrl());
+        }
+
+        @Test
+        @DisplayName("Check list shows 30 jobs")
+        void checkListShows30Jobs() {
+            Assertions.assertEquals(30, homepage.goToJobs().getSizeListTitle());
+        }
+
+        @Test
+        @DisplayName("Check 30 more jobs are listed after clicking more")
+        void check30MoreJobsAreListedAfterClickingMore() {
+            homepage.goToJobs().clickMore();
+            Assertions.assertEquals(30, homepage.goToJobs().getSizeListTitle());
+        }
+
+        @Test
+        @DisplayName("Check more jobs sentence is shown")
+        void checkMoreJobsSentenceIsShown() {
+            Assertions.assertTrue(homepage.goToJobs().doPageContain("These are jobs at YC startups"));
+        }
+
+        @Test
+        @DisplayName("Check at least one title contains word hiring")
+        void checkAtLeastOneTitleContainsWordHiring() {
+            Assertions.assertTrue(homepage.goToJobs().doListContain("Hiring"));
+
+        }
+    }
+
 
     @AfterEach()
     void teardown() {

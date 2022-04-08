@@ -6,20 +6,13 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class HNCommentsPage {
+public class HNCommentsPage extends HNPage{
 
-    private WebDriver driver;
 
     public HNCommentsPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public String GetParaGraphByIndex(int i){
-        List<WebElement> elements = driver.findElements(By.className("commtext"));
-        String Para = elements.get(i + 1).getText();
-
-        return Para;
-    }
 
     public boolean isLessThan30CommentOnPage() {
         List listed = driver.findElements(By.className("commtext"));
@@ -49,5 +42,39 @@ public class HNCommentsPage {
         return Para.getClass().equals(String.class);
     }
 
+    public String GetParaGraphByIndex(int i){
+        List<WebElement> elements = driver.findElements(By.className("commtext"));
+        String Para = elements.get(i + 1).getText();
 
+        return Para;
+    }
+
+    public int HowManySpacesInAParagraph(int p){
+        List<WebElement> elements = driver.findElements(By.className("commtext"));
+        String Para = elements.get(p).getText();
+        int counter = 0;
+        for (int i = 0;i< Para.length(); i++){
+            if(Para.charAt(i) == ' '){
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public int HowManySpacesInAParagraph() {
+        List<WebElement> elements = driver.findElements(By.className("commtext"));
+        int counter = 0;
+        for (int i = 0; i < elements.get(i).getText().length(); i++) {
+            String Para = elements.get(i).getText();
+            for (int j = 0; j < Para.length(); j++) {
+                if (Para.charAt(j) == ' ') {
+                    counter++;
+                }else{
+
+                }
+            }
+        }
+        return counter;
+    }
+    
 }

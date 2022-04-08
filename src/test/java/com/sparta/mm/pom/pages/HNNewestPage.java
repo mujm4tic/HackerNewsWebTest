@@ -1,12 +1,17 @@
 package com.sparta.mm.pom.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class HNNewestPage {
+public class HNNewestPage extends HNPage {
 
-    private WebDriver driver;
     public HNNewestPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+    }
+
+    public boolean isFirstArticleLessThanAnHour(){
+        String date = driver.findElement(By.className("age")).getText();
+        return date.contains("minutes ago");
 
     }
 }
