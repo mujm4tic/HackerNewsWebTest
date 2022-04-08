@@ -54,4 +54,4 @@ out/
 *.iml
 *.ipr
 *.iws
-/resources
+resources
