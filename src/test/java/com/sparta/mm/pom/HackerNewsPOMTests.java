@@ -186,6 +186,7 @@ public class HackerNewsPOMTests {
         }
     }
 
+    @Nested
     @DisplayName("Test Newest Page")
     class testNewestPage {
 
