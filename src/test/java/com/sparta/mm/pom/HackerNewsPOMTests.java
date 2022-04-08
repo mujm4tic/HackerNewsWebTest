@@ -2,8 +2,15 @@ package com.sparta.mm.pom;
 
 import com.sparta.mm.pom.pages.HNHomepage;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+
+import java.time.Duration;
 
 import static com.sparta.mm.pom.pages.HNPage.TOP_LINKS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -128,6 +135,19 @@ public class HackerNewsPOMTests {
         @DisplayName("Ask Page Has 30 Entries")
         void askPageHas30Entries() {
             assertTrue(homepage.goToAsk().getNumberContentTitles()==30);
+        }
+
+        @Test
+        @DisplayName("First Score Is Found in 6 Second")
+        void isFoundInTime() {
+            Wait<WebDriver> wait = new FluentWait<>(driver)
+                    .withTimeout(Duration.ofSeconds(6))
+                    .pollingEvery(Duration.ofSeconds(2))
+                    .ignoring(NoSuchElementException.class);
+            driver.get(homepage.goToAsk().getURL());
+            WebElement result = wait.until(driver -> driver.findElement(By.id("score_30940747")));
+            System.out.println(result);
+            Assertions.assertTrue(result.isDisplayed());
         }
     }
 
