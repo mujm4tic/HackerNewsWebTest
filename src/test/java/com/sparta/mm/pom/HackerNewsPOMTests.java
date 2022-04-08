@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import static com.sparta.mm.pom.pages.HNPage.TOP_LINKS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,7 +14,6 @@ public class HackerNewsPOMTests {
     private static WebDriver driver;
     private HNHomepage homepage;
 
-    private static final String[] headers = new String[]{"Hacker News", "new", "past", "comments", "ask", "show", "jobs", "submit"};
 
     @BeforeAll
     static void setupAll() {
@@ -33,21 +33,21 @@ public class HackerNewsPOMTests {
         @Test
         @DisplayName("check headers exist")
         void checkHeadersExists() {
-            for (String header : headers) {
-                Assertions.assertTrue(homepage.doesHeaderExist(header));
+            for (String topLink : TOP_LINKS) {
+                Assertions.assertTrue(homepage.doesTopLinkExist(topLink));
             }
         }
 
         @Test
         @DisplayName("check number articles is 30")
         void checkNumberArticlesIs30() {
-            Assertions.assertEquals(30, homepage.getNumberOfArticles());
+            Assertions.assertEquals(30, homepage.getSizeListTitle());
         }
 
         @Test
         @DisplayName("check if 30 new articles are shown")
         void checkIf30NewArticlesAreShown() {
-            homepage.loadMoreArticles();
+            homepage.clickMore();
             Assertions.assertTrue((homepage.getNumberArticle(1) == 31) && (homepage.getNumberArticle(30) == 60));
         }
 
