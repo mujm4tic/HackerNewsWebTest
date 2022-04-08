@@ -45,7 +45,7 @@ public class HNPastPage extends HNPage {
     //    driver.findElement(By.className("morelink")).click();
     //}
 
-    private int getNumberOfItem() {
+    public int getNumberOfItem() {
         return driver.findElements(By.className("athing")).size();
     }
 
