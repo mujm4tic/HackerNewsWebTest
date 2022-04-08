@@ -6,13 +6,11 @@ import org.openqa.selenium.WebDriver;
 import java.time.LocalDate;
 
 
-public class HNPastPage {
-
-    private WebDriver driver;
-
+public class HNPastPage extends HNPage {
 
     public HNPastPage(WebDriver driver) {
-        this.driver = driver;
+        //this.driver = driver;
+        super(driver);
     }
 
     public boolean isDateYesterday() {
@@ -43,9 +41,9 @@ public class HNPastPage {
         return getUrl().equals("https://news.ycombinator.com/front");
     }
 
-    private void clickMore() {
-        driver.findElement(By.className("morelink")).click();
-    }
+    //public void clickMore() {
+    //    driver.findElement(By.className("morelink")).click();
+    //}
 
     private int getNumberOfItem() {
         return driver.findElements(By.className("athing")).size();
@@ -55,7 +53,7 @@ public class HNPastPage {
         return driver.findElements(By.className("morelink")).size() > 0;
     }
 
-    private String getUrl() {
-        return driver.getCurrentUrl();
-    }
+    //public String getUrl() {
+    //    return driver.getCurrentUrl();
+    //}
 }

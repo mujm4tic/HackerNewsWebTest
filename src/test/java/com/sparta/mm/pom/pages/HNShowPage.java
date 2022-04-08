@@ -3,11 +3,10 @@ package com.sparta.mm.pom.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class HNShowPage {
-    private WebDriver driver;
+public class HNShowPage extends HNPage {
 
     public HNShowPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public boolean isNumberOfItemEquals30() {
@@ -52,17 +51,17 @@ public class HNShowPage {
         return getUrl().equals("https://news.ycombinator.com/show");
     }
 
-    private String getUrl() {
-        return driver.getCurrentUrl();
-    }
+    //private String getUrl() {
+    //    return driver.getCurrentUrl();
+    //}
 
     private int getNumberOfArticle() {
         return driver.findElements(By.className("titlelink")).size();
     }
 
-    private void clickMore() {
-        driver.findElement(By.className("morelink")).click();
-    }
+    //private void clickMore() {
+    //    driver.findElement(By.className("morelink")).click();
+    //}
 
     private boolean isMoreExist() {
         return driver.findElements(By.className("morelink")).size() > 0;
