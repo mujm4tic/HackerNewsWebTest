@@ -122,19 +122,19 @@ public class HackerNewsPOMTests {
         @Test
         @DisplayName("Check that the ask link works")
         void checkThatTheAskLinkWorks() {
-            assertEquals("https://news.ycombinator.com/ask", homepage.goToAsk().getURL());
+            assertEquals("https://news.ycombinator.com/ask", homepage.goToAsk().getUrl());
         }
 
         @Test
         @DisplayName("If Ask Header Exists")
         void ifHeaderExists() {
-            assertTrue(homepage.goToAsk().doesHeaderExist());
+            assertTrue(homepage.goToAsk().doesTopLinkExist("ask"));
         }
 
         @Test
         @DisplayName("Ask Page Has 30 Entries")
         void askPageHas30Entries() {
-            assertTrue(homepage.goToAsk().getNumberContentTitles()==30);
+            assertEquals(30, homepage.goToAsk().getSizeListTitle());
         }
 
         @Test
@@ -144,7 +144,7 @@ public class HackerNewsPOMTests {
                     .withTimeout(Duration.ofSeconds(6))
                     .pollingEvery(Duration.ofSeconds(2))
                     .ignoring(NoSuchElementException.class);
-            driver.get(homepage.goToAsk().getURL());
+            driver.get(homepage.goToAsk().getUrl());
             WebElement result = wait.until(driver -> driver.findElement(By.id("score_30940747")));
             System.out.println(result);
             Assertions.assertTrue(result.isDisplayed());
