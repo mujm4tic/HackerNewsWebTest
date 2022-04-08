@@ -48,7 +48,7 @@ public class HackerNewsPOMTests {
         @Test
         @DisplayName("check number articles is 30")
         void checkNumberArticlesIs30() {
-            Assertions.assertEquals(30, homepage.getSizeListTitle());
+            assertEquals(30, homepage.getSizeListTitle());
         }
 
         @Test
@@ -151,6 +151,37 @@ public class HackerNewsPOMTests {
     }
 
     @Nested
+    @DisplayName("Test Comments Page")
+    class testCommentPage{
+        @Test
+        @DisplayName("Test Comments page")
+        void methodName() {
+            assertEquals("https://news.ycombinator.com/newcomments",homepage.goToComments().getUrl());
+        }
+
+        @Test
+        @DisplayName("Less Than 30 comments on the screen")
+        void lessThan30CommentsOnTheScreen() {
+            Assertions.assertTrue(homepage.goToComments().isLessThan30CommentOnPage());
+        }
+
+        @Test
+        @DisplayName("Check if there is more than 10 Spaces In A Paragraph")
+        void checkHowManySpacesInAParagraph() {
+            Assertions.assertTrue(homepage.goToComments().HowManySpacesInAParagraph(3) > 10);
+        }
+
+        @Test
+        @DisplayName("Check if there is more than 100 spaces in the page")
+        void checkHowManySpacesInASpecificParagraph() {
+            Assertions.assertTrue(homepage.goToComments().HowManySpacesInAParagraph() > 100);
+        }
+
+        @Test
+        @DisplayName("Check if paragraph contains hello")
+        void checkParagraphContains() {
+            Assertions.assertTrue(homepage.goToComments().GetParaGraphByIndex(1).contains("hello"));
+
     @DisplayName("Test Newest Page")
     class testNewestPage{
 
@@ -200,6 +231,7 @@ public class HackerNewsPOMTests {
         @DisplayName("Check at least one title contains word hiring")
         void checkAtLeastOneTitleContainsWordHiring() {
             Assertions.assertTrue(homepage.goToJobs().doListContain("Hiring"));
+
         }
     }
 
