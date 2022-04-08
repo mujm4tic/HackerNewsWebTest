@@ -95,6 +95,18 @@ public class HackerNewsPOMTests {
         void checkNumberOfItemEquals30() {
             Assertions.assertTrue(homepage.goToShow().isNumberOfItemEquals30());
         }
+
+        @Test
+        @DisplayName("Check title must start with Show HN:")
+        void checkTitleMustStartWithShowHN() {
+            Assertions.assertTrue(homepage.goToShow().isTitleStartWithShowHN());
+        }
+
+        @Test
+        @DisplayName("Check title must start with Show HN: after clicking More")
+        void checkTitleMustAlwaysStartWithShowHN() {
+            Assertions.assertTrue(homepage.goToShow().isTitleAlwaysStartWithShowHN());
+        }
     }
 
     @Nested
