@@ -36,7 +36,7 @@ public class HackerNewsPOMTests {
 
     @Nested
     @DisplayName("Test Homepage")
-    class testHomepage{
+    class testHomepage {
 
         @Test
         @DisplayName("check top links exist")
@@ -62,10 +62,11 @@ public class HackerNewsPOMTests {
     @Nested
     @DisplayName("Test past page")
     class testPastPage {
+
         @Test
         @DisplayName("Check that the past link works")
         void checkThePastLinkWorks() {
-            Assertions.assertTrue(homepage.goToPastPage().isThatThePastLinkWorks());
+            assertEquals("https://news.ycombinator.com/front", homepage.goToPastPage().getUrl());
         }
 
         @Test
@@ -90,10 +91,11 @@ public class HackerNewsPOMTests {
     @Nested
     @DisplayName("Test Show Page")
     class testShowPage {
+
         @Test
         @DisplayName("Check that the show link works")
         void checkTheShowLinkWorks() {
-            Assertions.assertTrue(homepage.goToShow().isThatTheShowLinkWorks());
+            assertEquals("https://news.ycombinator.com/show", homepage.goToShow().getUrl());
         }
 
         @Test
@@ -117,7 +119,7 @@ public class HackerNewsPOMTests {
 
     @Nested
     @DisplayName("Test Ask Page")
-    class testAskPage{
+    class testAskPage {
         @Test
         @DisplayName("Check that the ask link works")
         void checkThatTheAskLinkWorks() {
@@ -152,11 +154,11 @@ public class HackerNewsPOMTests {
 
     @Nested
     @DisplayName("Test Comments Page")
-    class testCommentPage{
+    class testCommentPage {
         @Test
         @DisplayName("Test Comments page")
         void methodName() {
-            assertEquals("https://news.ycombinator.com/newcomments",homepage.goToComments().getUrl());
+            assertEquals("https://news.ycombinator.com/newcomments", homepage.goToComments().getUrl());
         }
 
         @Test
@@ -181,9 +183,11 @@ public class HackerNewsPOMTests {
         @DisplayName("Check if paragraph contains hello")
         void checkParagraphContains() {
             Assertions.assertTrue(homepage.goToComments().GetParaGraphByIndex(1).contains("hello"));
+        }
+    }
 
     @DisplayName("Test Newest Page")
-    class testNewestPage{
+    class testNewestPage {
 
         @Test
         @DisplayName("Check that the newest link works")
@@ -211,14 +215,14 @@ public class HackerNewsPOMTests {
         @Test
         @DisplayName("Check list shows 30 jobs")
         void checkListShows30Jobs() {
-            Assertions.assertEquals(30,homepage.goToJobs().getSizeListTitle());
+            Assertions.assertEquals(30, homepage.goToJobs().getSizeListTitle());
         }
 
         @Test
         @DisplayName("Check 30 more jobs are listed after clicking more")
         void check30MoreJobsAreListedAfterClickingMore() {
             homepage.goToJobs().clickMore();
-            Assertions.assertEquals(30,homepage.goToJobs().getSizeListTitle());
+            Assertions.assertEquals(30, homepage.goToJobs().getSizeListTitle());
         }
 
         @Test
@@ -234,6 +238,7 @@ public class HackerNewsPOMTests {
 
         }
     }
+
 
     @AfterEach()
     void teardown() {
