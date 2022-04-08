@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import java.time.Duration;
+import java.util.Arrays;
 
 import static com.sparta.mm.pom.pages.HNPage.TOP_LINKS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,11 +39,10 @@ public class HackerNewsPOMTests {
     class testHomepage{
 
         @Test
-        @DisplayName("check headers exist")
-        void checkHeadersExists() {
-            for (String topLink : TOP_LINKS) {
-                Assertions.assertTrue(homepage.doesTopLinkExist(topLink));
-            }
+        @DisplayName("check top links exist")
+        void checkTopLinksExists() {
+            boolean doesToplinksExist = Arrays.stream(TOP_LINKS).anyMatch(topLink -> homepage.doesTopLinkExist(topLink));
+            Assertions.assertTrue(doesToplinksExist);
         }
 
         @Test
@@ -57,7 +57,6 @@ public class HackerNewsPOMTests {
             homepage.clickMore();
             Assertions.assertTrue((homepage.getNumberArticle(1) == 31) && (homepage.getNumberArticle(30) == 60));
         }
-
     }
 
     @Nested
@@ -148,6 +147,59 @@ public class HackerNewsPOMTests {
             WebElement result = wait.until(driver -> driver.findElement(By.id("score_30940747")));
             System.out.println(result);
             Assertions.assertTrue(result.isDisplayed());
+        }
+    }
+
+    @Nested
+    @DisplayName("Test Newest Page")
+    class testNewestPage{
+
+        @Test
+        @DisplayName("Check that the newest link works")
+        void checkThatTheAskLinkWorks() {
+            assertEquals("https://news.ycombinator.com/newest", homepage.goToNewest().getUrl());
+        }
+
+        @Test
+        @DisplayName("Check first article time is less than an hour")
+        void checkFirstArticleTimeIsLessThanAnHour() {
+            Assertions.assertTrue(homepage.goToNewest().isFirstArticleLessThanAnHour());
+        }
+    }
+
+    @Nested
+    @DisplayName("Test Jobs Page")
+    class testJobsPage {
+
+        @Test
+        @DisplayName("Check that the newest link works")
+        void checkThatTheAskLinkWorks() {
+            assertEquals("https://news.ycombinator.com/jobs", homepage.goToJobs().getUrl());
+        }
+
+        @Test
+        @DisplayName("Check list shows 30 jobs")
+        void checkListShows30Jobs() {
+            Assertions.assertEquals(30,homepage.goToJobs().getSizeListTitle());
+        }
+
+        @Test
+        @DisplayName("Check 30 more jobs are listed after clicking more")
+        void check30MoreJobsAreListedAfterClickingMore() {
+            homepage.goToJobs().clickMore();
+            Assertions.assertEquals(30,homepage.goToJobs().getSizeListTitle());
+        }
+
+        @Test
+        @DisplayName("Check more jobs sentence is shown")
+        void checkMoreJobsSentenceIsShown() {
+            Assertions.assertTrue(homepage.goToJobs().doPageContain("These are jobs at YC startups"));
+        }
+
+        @Test
+        @DisplayName("Check at least one title contains word hiring")
+        void checkAtLeastOneTitleContainsWordHiring() {
+            Assertions.assertTrue(homepage.goToJobs().doListContain("Hiring"));
         }
     }
 
