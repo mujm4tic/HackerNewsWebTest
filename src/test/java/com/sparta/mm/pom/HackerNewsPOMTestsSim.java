@@ -12,8 +12,6 @@ public class HackerNewsPOMTestsSim {
     private static WebDriver driver;
     private HNHomepage homepage;
 
-    private static final String[] headers = new String[]{"Hacker News", "new", "past", "comments", "ask", "show", "jobs", "submit"};
-
     @BeforeAll
     static void setupAll() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
@@ -27,12 +25,12 @@ public class HackerNewsPOMTestsSim {
 
     @Nested
     @DisplayName("Test Newest Page")
-    class testAskPage {
+    class testNewestPage{
 
         @Test
         @DisplayName("Check that the newest link works")
         void checkThatTheAskLinkWorks() {
-            assertEquals("https://news.ycombinator.com/newest", homepage.goToNewest().getURL());
+            assertEquals("https://news.ycombinator.com/newest", homepage.goToNewest().getUrl());
         }
 
         @Test
@@ -63,13 +61,6 @@ public class HackerNewsPOMTestsSim {
         void check30MoreJobsAreListedAfterClickingMore() {
             homepage.goToJobs().clickMore();
             Assertions.assertEquals(30,homepage.goToJobs().getSizeListTitle());
-        }
-
-        @Test
-        @DisplayName("Check")
-        void check() {
-            homepage.goToJobs().doesTopLinkExist("header");
-            Assertions.assertEquals(1,1);
         }
 
         @Test

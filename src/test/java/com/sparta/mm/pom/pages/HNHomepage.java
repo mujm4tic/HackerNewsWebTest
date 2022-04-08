@@ -7,12 +7,8 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HNHomepage extends HNPage{
+public class HNHomepage extends HNPage {
 
-    private WebDriver driver;
-    private By pagetop = By.className("pagetop");
-    private By morelink = By.className("morelink");
-    private By titlelink = By.className("titlelink");
     private By rank = By.className("rank");
 
     By newest = new By.ByLinkText("new");
@@ -52,6 +48,11 @@ public class HNHomepage extends HNPage{
         return new HNJobsPage(driver);
     }
 
+    public HNShowPage goToShow() {
+        driver.findElement(show).click();
+        return new HNShowPage(driver);
+    }
+
     public List<Integer> getListNumberArticles() {
         List<Integer> numberArticles = new ArrayList<>();
         List<WebElement> ranks = driver.findElements(rank);
@@ -66,12 +67,7 @@ public class HNHomepage extends HNPage{
         return numArticleToInt(element);
 
     }
-
-    public HNShowPage goToShow() {
-        driver.findElement(show).click();
-        return new HNShowPage(driver);
-    }
-
+    
     private Integer numArticleToInt(WebElement element) {
         return Integer.valueOf(element.getText().replace(".", ""));
     }

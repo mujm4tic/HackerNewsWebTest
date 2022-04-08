@@ -9,7 +9,6 @@ public class HNNewestPage extends HNPage {
         super(driver);
     }
 
-
     public boolean isFirstArticleLessThanAnHour(){
         String date = driver.findElement(By.className("age")).getText();
         return date.contains("minutes ago");
