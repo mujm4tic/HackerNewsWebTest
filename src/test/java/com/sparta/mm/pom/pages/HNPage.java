@@ -29,7 +29,6 @@ public abstract class HNPage {
     }
 
     public boolean doesTopLinkExist(String name) {
-        System.out.println(driver.findElement(pagetop).getText());
         return driver.findElement(pagetop).getText().contains(name);
     }
 
@@ -40,12 +39,7 @@ public abstract class HNPage {
 
     public boolean doListContain(String word){
         List<WebElement> elements = driver.findElements(titlelink);
-        for(WebElement element : elements){
-            if(element.getText().contains(word)){
-                return true;
-            }
-        }
-        return false;
+        return elements.stream().anyMatch(element -> element.getText().contains(word));
     }
 
     public String getUrl() {
